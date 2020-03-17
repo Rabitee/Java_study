@@ -83,7 +83,7 @@
 
     ```Java
     (a, b) -> {a.methodOfA(b);}             // 기존 람다식
-    Class :: methodOfA                      // parameter의 method 참조
+    ClassOfA :: methodOfA                   // parameter의 method 참조
     ```
 
 * 생성자 참조
