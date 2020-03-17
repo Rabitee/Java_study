@@ -10,7 +10,7 @@
       * 해당 interface를 람다식의 target type이라 함
 * 형태: (parameter) -> {code}
   * 예시
-    <pre><code>(int x) -> {System.out.println(x);} </code></pre>
+    ```(int x) -> {System.out.println(x);}```
 
 ## 14.2 기본 문법
 
