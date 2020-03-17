@@ -41,18 +41,18 @@
    * 형태: parameter는 있으나 return은 없음
    * Method: accept(T t)
    * 예시
-        ```Consumer&ltString&gt consumer = t -> System.out.println(t)```
+        ```Consumer<String> consumer = t -> System.out.println(t)```
 2. Supplier
    * 형태: parameter는 없으나 return은 있음
    * Method: T get()
    * 예시
-        ```Supplier&ltString&gt supplier = () -> {return 0;}```
+        ```Supplier<String> supplier = () -> {return 0;}```
 3. Function
    * 형태: parameter가 있고 return도 있음
      * parameter와 return value의 type이 다름
    * Method: R apply(T t)
    * 예시
-        ```Function&ltStudent, String&gt f = t -> t.getName();```
+        ```Function<Student, String> f = t -> t.getName();```
 4. Operator
    * 형태: parameter가 있고 return도 있음
      * parameter와 return value의 type이 같음
@@ -63,7 +63,7 @@
    * 형태: parameter가 있고 boolean type의 return이 있음
    * Method: boolean test(T t)
    * 예시
-        ```Predicate&ltStudent&gt p = t -> t.getName().equals("Tom");```
+        ```Predicate<Student> p = t -> t.getName().equals("Tom");```
 
 ## 14.5 Method 참조
 
