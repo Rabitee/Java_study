@@ -76,3 +76,17 @@
     Math :: max;                            // static method 참조
     Var :: max;                             // instance를 통한 참조
     </code></pre>
+* Pamameter의 method 참조
+  * 형태: static method와 동일, class 이름은 첫 번째 parameter의 class를 사용
+  * 예시
+    <pre><code>
+    (a, b) -> {a.methodOfA(b);}             // 기존 람다식
+    Class :: methodOfA                      // parameter의 method 참조
+    </code></pre>
+* 생성자 참조
+  * 형태: Class :: new
+  * 예시
+    <pre><code>
+    (a, b) -> {return new ClassOfA(a, b);}  // 기존 람다식
+    ClassOfA :: new                         // 생성자 참조
+    </code></pre>
