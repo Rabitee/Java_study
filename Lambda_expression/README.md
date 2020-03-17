@@ -17,8 +17,8 @@
   * parameter를 사용해 {}안의 code를 실행
     * 람다식에서는 일반적으로 parameter의 타입을 명시하지 않음
         ```(x) -> {System.out.println(x);}```
-    * 실행문이 하나인 경우 {} 생략 가능
-        ```(x) -> System.out.println(x)```
+    * parameter나 실행문이 하나인 경우 괄호 생략 가능
+        ```x -> System.out.println(x)```
     * Parameter가 없으면 ()로 표기
         ```() -> {code}```
     * Target type이 return 값이 있는 경우 {} 안에 return 가능
