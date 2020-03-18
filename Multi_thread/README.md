@@ -127,9 +127,11 @@
 ## 12.4 Thread의 상태
 
 ```mermaid
+mermaid("
 graph LR;
     s1((스레드 객체 생성<br/>new))--"start()"-->s2((실행 대기<br/>runnable));
     s2((실행 대기<br/>runnable))--"반복"-->s3((실행));
     s3((실행))--"반복"-->s2((실행 대기<br/>runnable));
     s3((실행))-->s4((종료));
+")
 ```
