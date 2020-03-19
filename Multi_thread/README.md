@@ -194,8 +194,11 @@
 * 생성 방법: ExecutorService 객체 이용
   
     ```Java
-    // parameter로 최대 thread 개수를 지정 가능
     ExecutorService es = Executors.newCachedThreadPool();
+
+    // parameter로 최대 thread 개수를 지정 가능
+    // 주로 Runtime.getRuntime().availableProcessors()를 이용해 CPU 코어와 같은 수를 지정
+    ExecutorService es = Executors.newFixedThreadPool(int n)
     ```
 
 * 종료 방법: shutdown() method 호출
@@ -228,4 +231,63 @@
     * 예외 발생 시 thread가 종료되지 않고 재사용
       * execute() method는 예외 발생 시 해당 thread를 종료하고 새로 생성함 -> overhead 발생
 
-* 처리 결과
+3. Task 처리 결과 관리
+
+* 종류
+  * Blocking 방식: Thread가 종료될 때까지 기다렸다 완료되면 처리 결과를 return
+    * 기다리는 동안 다른 작업 수행이 불가능하니 주의!
+      * 새 thread를 생성하거나 threadpool의 thread를 사용
+    * 작업 결과를 외부 객체에 저장할 수 있음
+      * 주로 공유 객체에 2개 이상의 thread 처리 결과를 취합하기 위해 사용함
+  * Callback 방식: Task 처리를 요청한 후 thread가 종료되면 자동으로 callback 함수가 호출됨
+    * thread의 종료를 기다리지 않고 다른 작업 수행 가능
+    * Runnable 객체에서 callback 기능 지원
+    * Callback method를 가지는 class 필요
+      * 직접 정의 가능
+      * CompletionHandler 이용 가능
+  
+  ```Java
+  // Blocking 방식
+  class Task implements Runnable {
+    Result res;
+    Task(Result res) {
+      this.res = res;
+    }
+    public void run() {
+      ...
+      // 결과를 외부 객체(result)에 저장함
+    }
+  }
+  ExecutorService executorService = Executors.newFixedThreadPool(
+    Runtime.getRuntime().availableProcessors()
+  );
+  Result res = new Result();
+  Runnable task1 = new Task(res);
+  Runnable task2 = new Task(res);
+  Future<Result> future = executorService.submit(task1, res);
+  Future<Result> future = executorService.submit(task2, res);
+
+  // Callback 방식
+  private CompletionHandler<Integer, void> callback = new CompletionHandler<Integer, void>() {
+    // Task가 정상 처리 됐을때 호출됨
+    public void completed(Integer result, Void attachment) {
+      ...
+    }
+    // Task 처리 도중 예외가 발생했을 때 호출됨
+    public void failed(Throwable e, Void attachment) {
+      ...
+    }
+
+    Runnable task = new Runnable() {
+      public void run() {
+        try {
+          ...
+          callback.completed(result, null);
+        } catch(Exception e) {
+          callback.failed(e, null)
+        }
+      }
+    };
+    executorService.submit(task);
+  }
+  ```
