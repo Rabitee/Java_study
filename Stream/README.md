@@ -85,3 +85,4 @@
   * Stream의 종류에 영향을 받음
     * Array 계열은 index 덕에 subdata로 나누기가 쉬움
     * Set, linkedlist 등은 나누기가 쉽지 않음
+  
