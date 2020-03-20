@@ -60,3 +60,28 @@
     OptionalDouble od = scoreStream.average();
     double scoreAvg = od.getAsDouble();
     ```
+
+## 16.3 병렬 처리
+
+1. 개요
+
+* 정의: 멀티 코어 CPU에서 하나의 task를 여러 개로 나누어 처리하는 것
+* 분류: data parallelism과 task parallelism으로 나뉨
+  * Java의 parallel stream은 data parallelism을 지원
+
+2. ForkJoin framework
+
+* 목적: 요소의 병렬 처리 지원
+* 방법: Fork 단계와 join 단계로 나뉨
+  * Fork 단계: 전체 data를 여러 개의 subdata로 나눔
+    * Subdata를 멀티 코어에서 병렬로 처리
+  * Join 단계: 결과를 결합
+  * ForkJoinPool이라는 threadpool 제공
+* 생성: Code에서 직접 사용 가능하지만, parallem stream을 생성하면 내부적으로 forkjoin framework를 사용
+  * stream에서 parallel stream으로 변경 가능
+* 성능: 항상 일반 stream보다 뛰어나지는 않음
+  * Threadpool과 thread를 생성할 때 비용 발생
+    * data가 많고, data 처리 시간이 길 때 효율이 좋음
+  * Stream의 종류에 영향을 받음
+    * Array 계열은 index 덕에 subdata로 나누기가 쉬움
+    * Set, linkedlist 등은 나누기가 쉽지 않음
