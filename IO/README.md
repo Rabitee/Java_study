@@ -142,3 +142,96 @@
         in.defaultReadObject(); // Child class의 모든 field를 deserialization
     }
     ```
+
+## 18.3 네트워크
+
+1. 소개
+
+* 정의: 여러 대의 PC를 통신 회선으로 연결한 것
+  * 지역 네트워크: 회사, 건물 등 특정 영역의 PC를 통신 회선으로 연결한 것
+  * 인터넷: 지역 네트워크를 통신 회선으로 연결한 것
+
+2. 서버와 클라이언트
+
+* Server: 서비스를 제공하는 프로그램
+  * Client의 request를 처리하고 response를 보냄
+* Client: 서비스를 받는 프로그램
+  * 서비스를 받기위해 연결을 요청
+
+3. IP와 port
+
+* IP: PC의 고유한 주소
+  * 프로그램은 DNS를 이용해 PC의 IP 주소를 찾음
+* Port: Server 선택을 위한 번호
+  * PC내 여러 개의 server 중 적절한 port 번호를 찾아서 연결
+    * 웹 서버 - 80, FTP - 21 등
+  * Client도 server에서 정보를 받기위해 port 번호가 필요
+    * OS에서 할당해줌
+
+## 18.4 TCP
+
+1. 소개
+
+* 정의: Transmission Control Protocol
+  * 연결 지향적 protocol: server와 client가 연결된 상태에서 data를 주고 받음
+  * client가 요청 -> server가 수락 -> data 전달(3 hand shaking)
+  * 단점
+    * 반드시 연결되어야 함 -> 시간이 오래 걸림
+    * UDP보다 느릴 수 있음
+* ServerSocket & Socket class 사용
+  * ServerSocket: Client의 요청을 수락할 지 여부를 처리
+  * Socket: 연결된 client와 통신을 처리
+
+2. 연결 요청 및 수락
+
+* 연결 수락: ServerSocket에 port 번호를 parameter로 줌
+* 연결 요청: 연결하려는 server의 IP와 port를 명시
+
+    ```Java
+    // 연결 수락
+    // 5001: port 번호
+    ServerSocket ss = new ServerSocket(5001);
+    try {
+        // accept()는 blocking 됨
+        Socket s = ss.accept();
+    }
+    catch(Exception e) {
+
+    }
+
+    // 연결 요청
+    try {
+        // Socket 생성자는 blocking됨
+        Socket socket = new Socket("localhost", 5001);
+        Socket socket = new Socket();
+        // connect()는 blocking 됨
+        socket.connect(new InetSocketAddress("localhost", 5001))
+    }
+    catch(UnknownHostException e) {
+
+    }
+    catch(IOException e) {
+
+    }
+    ```
+
+3. Thread 병렬 처리
+
+* 목적: Main thread가 직접 입출력을 담당할 경우, Socket 생성자 또는 connect()에서 blocking 됨 -> 다른 작업이 불가능
+  * Server가 지속적으로 client의 연결 수락 여부 처리가 불가능
+  * Client1과 입출력하는 동안엔 client2의 입출력이 불가능
+    * 따라서 server는 별도의 worker thread 생성이 필요
+    * 접속 요청하는 client가 늘면 thread가 계속 늘어날 수 있음
+      * ThreadPool로 관리가 필요
+
+## 18.5 UDP
+
+1. 소개
+
+* 정의: User Datagram Protocol
+  * 비연결 지향적 protocol: 연결을 거치지 않고 발신자가 일방적으로 data를 발신
+    * 연결 과정이 없어 tcp 보다 빠름
+    * 보낸 패킷들이 서로 다른 길로 감 -> 보낸 data와 실제 수신한 data의 순서가 다를 수 있음
+      * 패킷 손실의 가능성도 존재
+
+* TCP와의 비교: 속도는 UDP, 신뢰성은 TCP
