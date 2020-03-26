@@ -156,6 +156,7 @@ blocking 여부 | blocking만 지원 | non-blocking도 지원 |
 * Callback method까지 사용한 예시
 
     ```Java
+    // read 및 write도 아래와 유사
     AsynchronousServerSocketChannel assc = AsynchrousServerSocketChannel.open();
     assc.bind(new InetSocketAddress(5001));
     assc.accept(null, new CompletionHandler<AsynchrousSocketChannel, Void>() {
