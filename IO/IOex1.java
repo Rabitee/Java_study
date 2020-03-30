@@ -6,7 +6,7 @@ import java.io.OutputStream;
 public class IOex1 {
     public static void main(String[] args) {
         String path = "C:/Users/donghwa/Desktop/local_git/Java_study/IO";
-
+        
         try(InputStream is = new FileInputStream(path + "/test.jpg");
             OutputStream os = new FileOutputStream(path + "/copy.jpg")) {
             
